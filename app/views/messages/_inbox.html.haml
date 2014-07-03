@@ -1,0 +1,36 @@
+-@page_title = :inbox.l
+
+- if @messages.empty?
+  %p= :no_messages.l
+-else
+  %table.table.table-bordered
+    - @messages.each do |message_thread|
+      - message = message_thread.message
+      - children = message_thread.parent_message.children              
+      %tr{:class => message_thread.read? ? '' : 'alert-success'}
+        %td
+          = check_box_tag "delete[]", message_thread.id
+        %td
+          -if children.any?
+            -if message_thread.read?
+              %span.badge
+                = children.size
+            -else
+              %span.badge.badge-success
+                = children.size
+          =link_to h(message_thread.subject), user_message_path(@user, message)
+          -if !message_thread.read?
+            %span.label.label-success
+              =:new.l
+          %br
+          %em
+            =message.sender.login
+            \: 
+            =truncate(message.body)
+        
+        %td
+          =time_ago_in_words_or_date(message_thread.updated_at)    
+  = submit_tag :delete_selected.l, :class => 'btn btn-danger'           
+        
+  =paginate @messages, :theme => 'bootstrap'             
+

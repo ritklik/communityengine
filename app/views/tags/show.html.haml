@@ -1,0 +1,58 @@
+-widget do 
+  %ul.nav.nav-list
+    %li.nav-header
+      - if params[:type]
+        = (params[:type].downcase.pluralize + '_tagged').l
+      - else
+        = :items_tagged.l
+    - @tags.each do |tag|
+      %li= link_to h(tag.name), tag_path(tag)
+       
+-if @related_tags.to_a.size > 0
+  -widget do
+    %h3=:related_tags.l
+    -tag_cloud @related_tags, %w(css1 css2 css3 css4 css5) do |tag, css_class|
+      =link_to h(tag.name), tag_path(tag), :class => css_class
+    %p
+      = icon_link_to 'icon-plus-sign', :all_tags.l, tags_path  
+
+.clearfix    
+  - if @posts.any?
+    -unless params[:type]    
+      %h2=:posts.l
+      %ul
+        - @posts.each do |post|
+          %li
+            = link_to( truncate(post.display_title, :length => 75), user_post_path(post.user, post), :title => :by.l(:login => post.user.login) )
+            %p.post_excerpt= truncate_words(post.post, 35, '...' )
+      = icon_link_to 'icon-plus-sign', :all_posts_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'Post') unless params[:type]
+    -else 
+      = render :partial => 'posts/post', :collection => @posts      
+      = paginate @posts, :theme => 'bootstrap'
+      
+.clearfix
+  - if @photos.any?
+    %h2=:photos.l(:count => @photos.size)
+    %ul.thumbnails
+      - @photos.each do |photo|
+        %li.span3= link_to image_tag(photo.photo.url(:medium), :title => "#{photo.description} ("+:uploaded_by.l+" #{photo.user.login})"), user_photo_path(photo.user, photo), :class => "thumbnail"
+    = icon_link_to 'icon-plus-sign', :all_photos_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'Photo') unless params[:type]
+
+.clearfix
+  - if @users.any?
+    %h2= t('tags.show.users')
+    %ul.thumbnails
+      - @users.each do |user|
+        %li.span3= link_to image_tag(user.avatar_photo_url(:medium)), user_path(user), :title => user.login, :class => "thumbnail"
+    = icon_link_to 'icon-plus-sign', :all_users_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'User') unless params[:type]
+
+.clearfix
+  - unless @clippings.empty?
+    %h2= :clippings.l
+    %ul.thumbnails
+      - @clippings.each do |clipping|
+        %li.span3=render :partial => 'clippings/clipping', :locals => {:clipping => clipping}
+    = icon_link_to 'icon-plus-sign', :all_clippings_tagged.l(:tag_name => @tags_raw), show_tag_type_path(:id => @tags_raw, :type => 'Clipping') unless params[:type]
+
+- if @pages && !params[:type].eql?('Post')
+  = paginate @pages, :theme => 'bootstrap'

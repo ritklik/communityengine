@@ -1,0 +1,20 @@
+-@page_title= :browse_content_by_tags.l
+
+-widget do 
+  %h3= :what_are_tags.l
+  %p= :tags_are_one_word_descriptors_users_assign_to_blog_posts_pictures_and_clippings_on.l+" #{configatron.community_name}."
+  %p= :bigger_font_size_more_popular_tag.l
+    
+-widget do 
+  %h3= :search.l
+  =form_tag search_tags_path, :method => 'get', :class => 'form' do
+    .control-group
+      .controls= text_field_tag 'id', params[:id], :autocomplete => "off", :placeholder => 'search tags'
+    #id_auto_complete.auto_complete
+    -content_for :end_javascript do
+      = tag_auto_complete_field 'id', {:url => { :controller => "tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
+    .controls
+      = submit_tag :go.l, :class => 'btn btn-primary'
+
+-tag_cloud @tags, %w(css1 css2 css3 css4 css5) do |tag, css_class|
+  =link_to tag.name, tag_url(tag.to_param), :class => css_class

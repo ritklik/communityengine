@@ -1,0 +1,10 @@
+-@page_title= :new_album.l
+-widget do 
+  %h3 Tips
+  %p=:album_tip.l :community_name => configatron.community_name
+
+%p
+  = link_to :back.l, user_photo_manager_index_path(current_user), :class => 'btn'
+
+%h2= 'Album Details'
+=render 'form'

@@ -1,0 +1,6 @@
+/*
+ *  the following required file can be found at vendor/assets/stylesheets/jcrop/jquery.Jcrop.min.css
+ *= require jcrop/jquery.Jcrop.min
+ */
+
+#store {  position: absolute;  left: -5000px; }

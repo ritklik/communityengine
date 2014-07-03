@@ -1,0 +1,14 @@
+-@page_title=:new_photo.l
+
+-widget do 
+  %h3
+    =:tips.l
+  %p 
+    =:photo_tip_1.l
+  %p 
+    =:photo_tip_2.l
+
+%p
+  = link_to :back.l, user_photos_path(@user), :class => 'btn'
+
+=render 'form'

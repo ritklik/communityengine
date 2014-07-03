@@ -1,0 +1,14 @@
+- @section = 'events'
+- @page_title = :events.l
+= :find_out_where_to_be_and_when_to_be_there.l
+
+- if @is_admin_user
+  -widget do 
+    %ul.nav.nav-list
+      %li= link_to_unless_current :past_events.l, past_events_path
+      %li= link_to_unless_current :upcoming_events.l, events_path
+      %li= link_to :administer_events.l, admin_events_path
+=render :partial=>'subscribe'
+
+= render :partial=>'event', :collection=>@events, :locals=>{:show_details_link=>true}
+=paginate @events , :theme => 'bootstrap'    

@@ -1,0 +1,7 @@
+-@page_title= :new_topic.l
+%h2
+  = :by.l :login => current_user.display_name
+%p
+  =link_to :back.l, @forum, :class => 'btn'
+  
+= render 'form'
